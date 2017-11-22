@@ -1,67 +1,45 @@
 package com.ldgx.eshop.util;
 
-import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 
+
 /**
- * ÑéÖ¤·½·¨
+ * ç¼–ç 
  * @author fulq
  *
  */
 public class SignUtil {
-	private static final String token = "immoc";
+	private static final String token = "ldgx";	
 
-	public static boolean checkSignature(String signature, String timestamp, String nonce)
+	public static String checkSignature(String signature, String timestamp, String nonce)
 			throws NoSuchAlgorithmException {
-		String[] arr = new String[] { token, timestamp, nonce };
-
-		// ¼ÓÃÜ/Ğ£ÑéÁ÷³ÌÈçÏÂ£º
-		// 1. ½«token¡¢timestamp¡¢nonceÈı¸ö²ÎÊı½øĞĞ×ÖµäĞòÅÅĞò
-		Arrays.sort(arr);
-		// 2. ½«Èı¸ö²ÎÊı×Ö·û´®Æ´½Ó³ÉÒ»¸ö×Ö·û´®½øĞĞsha1¼ÓÃÜ
+		String[] array = new String[] { token, timestamp, nonce };
 		StringBuffer sb = new StringBuffer();
-		for (int i = 0; i < arr.length; i++) {
-			sb.append(arr[i]);
+		// å­—ç¬¦ä¸²æ’åº
+		Arrays.sort(array);
+		for (int i = 0; i < 4; i++) {
+			sb.append(array[i]);
 		}
-		// sha1¼ÓÃÜ
-		String temp = getSha1(sb.toString());
+		String str = sb.toString();
+		// SHA1ç­¾åç”Ÿæˆ
+		MessageDigest md = MessageDigest.getInstance("SHA-1");
+		md.update(str.getBytes());
+		byte[] digest = md.digest();
 
-		// 3. ¿ª·¢Õß»ñµÃ¼ÓÃÜºóµÄ×Ö·û´®¿ÉÓësignature¶Ô±È£¬±êÊ¶¸ÃÇëÇóÀ´Ô´ÓÚÎ¢ĞÅ
-		return temp.equals(signature);
-	}
-	// ÏÂÃæËÄ¸öimport·ÅÔÚÀàÃûÇ°Ãæ °üÃûºóÃæ
-	// import java.io.UnsupportedEncodingException;
-	// import java.security.MessageDigest;
-	// import java.security.NoSuchAlgorithmException;
-	// import java.util.Arrays;
-
-	public static String getSha1(String str) {
-		if (null == str || 0 == str.length()) {
-			return null;
-		}
-		char[] hexDigits = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f' };
-		try {
-			MessageDigest mdTemp = MessageDigest.getInstance("SHA1");
-			mdTemp.update(str.getBytes("UTF-8"));
-
-			byte[] md = mdTemp.digest();
-			int j = md.length;
-			char[] buf = new char[j * 2];
-			int k = 0;
-			for (int i = 0; i < j; i++) {
-				byte byte0 = md[i];
-				buf[k++] = hexDigits[byte0 >>> 4 & 0xf];
-				buf[k++] = hexDigits[byte0 & 0xf];
+		StringBuffer hexstr = new StringBuffer();
+		String shaHex = "";
+		for (int i = 0; i < digest.length; i++) {
+			shaHex = Integer.toHexString(digest[i] & 0xFF);
+			if (shaHex.length() < 2) {
+				hexstr.append(0);
 			}
-			return new String(buf);
-		} catch (NoSuchAlgorithmException e) {
-			e.printStackTrace();
-		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
+			hexstr.append(shaHex);
 		}
-		return str;
+		return hexstr.toString();
 	}
+	
+	
 
 }

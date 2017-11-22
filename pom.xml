@@ -2,7 +2,7 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.ldgx.eshop</groupId>
-  <artifactId>eshop-back</artifactId>
+  <artifactId>eshop-weixin</artifactId>
   <packaging>war</packaging>
   <version>0.0.1-SNAPSHOT</version>
   <properties>
@@ -177,6 +177,16 @@
 	    <version>4.5</version>
 	</dependency>
 		
+		
+	<!-- 微信加密 -->
+	<!-- https://mvnrepository.com/artifact/commons-codec/commons-codec -->
+	<dependency>
+	    <groupId>commons-codec</groupId>
+	    <artifactId>commons-codec</artifactId>
+	    <version>1.9</version>
+	</dependency>
+
+	
   </dependencies>
   
   
