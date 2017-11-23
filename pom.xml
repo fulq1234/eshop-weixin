@@ -186,7 +186,20 @@
 	    <version>1.9</version>
 	</dependency>
 
+	<!-- dom4j,读写xml的工具 -->
+	<dependency>
+	    <groupId>dom4j</groupId>
+	    <artifactId>dom4j</artifactId>
+	    <version>1.6</version>
+	</dependency>
 	
+	<!-- XStream是一个Java对象和XML相互转换的工具,-->
+	<dependency>
+	    <groupId>com.thoughtworks.xstream</groupId>
+	    <artifactId>xstream</artifactId>
+	    <version>1.4.9</version>
+	</dependency>
+		
   </dependencies>
   
   
