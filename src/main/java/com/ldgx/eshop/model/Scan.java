@@ -1,13 +1,17 @@
 package com.ldgx.eshop.model;
 
+import java.util.Date;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import com.ldgx.eshop.enums.MessageEnum;
+
 
 /**
- * xml转java bean
+ * xml和java bean，互相转换
  * XmlAccessorType:
 FIELD:    JAXB 绑定类中的每个非静态、非瞬态字段将会自动绑定到 XML，除非由 XmlTransient 注释。 
 NONE:     所有字段或属性都不能绑定到 XML，除非使用一些 JAXB 注释专门对它们进行注释。 
@@ -45,6 +49,23 @@ public class Scan {
 	//消息id，64位整型
 	@XmlElement(name="MsgId")
 	private Integer MsgId;
+	
+	@XmlElement(name="Event")
+	private String event;
+
+	
+	public Scan() {
+		super();
+	}
+
+	public Scan(String toUserName, String fromUserName, String content) {
+		super();
+		this.toUserName = toUserName;
+		this.fromUserName = fromUserName;
+		this.content = content;
+		this.msgType = MessageEnum.text.getName();
+		this.createTime = new Date().getTime();
+	}
 
 	public Integer getId() {
 		return id;
@@ -102,11 +123,22 @@ public class Scan {
 		MsgId = msgId;
 	}
 
+	public String getEvent() {
+		return event;
+	}
+
+	public void setEvent(String event) {
+		this.event = event;
+	}
+
 	@Override
 	public String toString() {
 		return "Scan [id=" + id + ", toUserName=" + toUserName + ", fromUserName=" + fromUserName + ", createTime="
-				+ createTime + ", msgType=" + msgType + ", content=" + content + ", MsgId=" + MsgId + "]";
+				+ createTime + ", msgType=" + msgType + ", content=" + content + ", MsgId=" + MsgId + ", event=" + event
+				+ "]";
 	}
+
+	
 	
 	
 }
