@@ -33,14 +33,14 @@ public class HttpClientUtil {
 	 private static final CloseableHttpClient httpClient = HttpClientBuilder.create().setDefaultRequestConfig(config).build();
 	
 	 /**
-	  * 发送get请求
+	  * 
 	  * @param url
-	  * @param params:参数
+	  * @param params:
 	  * @throws IOException
 	  */
 	public static StringBuffer sendGet(String url,Map<String,String> params) throws IOException{
 		
-		//参数
+		//
 		  if ((params != null) && (!params.isEmpty()))
 	      {
 	        List<NameValuePair> pairs = new ArrayList(params.size());
@@ -59,7 +59,7 @@ public class HttpClientUtil {
 		response = httpClient.execute(httpGet);
 		int statusCode = response.getStatusLine().getStatusCode();
 		if(statusCode != 200) {
-			httpGet.abort();//中止
+			httpGet.abort();//锟斤拷止
 			throw new RuntimeException("HttpClient,error status code :" + statusCode);
 		}
 		InputStream entityContent = response.getEntity().getContent();
@@ -78,7 +78,7 @@ public class HttpClientUtil {
 	}
 	
 	/**
-	 * 发送post请求
+	 * 
 	 * @param url
 	 * @param params
 	 * @return
@@ -101,7 +101,7 @@ public class HttpClientUtil {
 		response = httpClient.execute(httpPost);
 		int statusCode = response.getStatusLine().getStatusCode();
 		if(statusCode != 200) {
-			httpPost.abort();//中止
+			httpPost.abort();//锟斤拷止
 			throw new RuntimeException("HttpClient,error status code :" + statusCode);			
 		}
 		

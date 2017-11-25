@@ -1,7 +1,6 @@
 package com.ldgx.eshop.controller;
 
 import java.security.NoSuchAlgorithmException;
-import java.util.Date;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,6 +16,11 @@ import com.ldgx.eshop.model.Scan;
 import com.ldgx.eshop.service.IWechatService;
 import com.ldgx.eshop.util.CheckUtil;
 
+/**
+ * 微信接口
+ * @author Administrator
+ *
+ */
 @Controller
 @RequestMapping("/weixin")
 public class WechatController {
