@@ -2,12 +2,17 @@ package com.ldgx.eshop.util;
 
 import java.io.IOException;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
+import org.springframework.web.context.request.RequestAttributes;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import net.sf.json.JSONObject;
 
@@ -40,6 +45,14 @@ public class AuthUtil {
 		
 		httpGet.releaseConnection();
 		return jsonObject;
+	}
+	
+	public static HttpServletRequest getServletRequest() {
+		RequestAttributes ra = RequestContextHolder.getRequestAttributes();
+        ServletRequestAttributes sra = (ServletRequestAttributes) ra;
+       //request
+        HttpServletRequest request = sra.getRequest();
+        return request;
 	}
 	
 }

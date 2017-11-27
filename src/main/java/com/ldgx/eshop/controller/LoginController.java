@@ -3,12 +3,14 @@ package com.ldgx.eshop.controller;
 import java.io.IOException;
 import java.net.URLEncoder;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.ldgx.eshop.util.AuthUtil;
 import com.ldgx.eshop.util.WeixinUser;
@@ -91,8 +93,10 @@ public class LoginController {
 	 * @return
 	 */
 	@RequestMapping("/callback")
-	@ResponseBody
-	public WeixinUser callback(String code) throws IOException{
+	public ModelAndView callback(String code) throws IOException{
+		
+		ModelAndView mv = new ModelAndView();
+		
 		StringBuffer sb = new StringBuffer("https://api.weixin.qq.com/sns/oauth2/access_token?appid=");
 		sb.append(wx_appid);
 		sb.append("&secret=");
@@ -104,13 +108,15 @@ public class LoginController {
 		
 		//4 第四步：拉取用户信息(需scope为 snsapi_userinfo)
 		StringBuffer sb4 = new StringBuffer("https://api.weixin.qq.com/sns/userinfo?access_token=");
-		sb4.append("ACCESS_TOKEN");
+		sb4.append(jo.get("access_token"));
 		sb4.append("&openid=");
 		sb4.append(jo.get("openid"));
 		sb4.append("&lang=zh_CN");
 
 		//StringBuffer rsb4 = HttpClientUtil.sendGet(sb4.toString(), null);
-		JSONObject jo2 = AuthUtil.doGetJson(sb.toString());
+		JSONObject jo2 = AuthUtil.doGetJson(sb4.toString());
+		
+		
 		
 		WeixinUser user = new WeixinUser();
 		if(jo2 != null && jo2.containsKey("openid")) {
@@ -135,11 +141,18 @@ public class LoginController {
 				}
 				
 			}
-			user.setUnionid(jo2.getString("unionid"));
+			if(jo2.containsKey("unionid")) {
+				user.setUnionid(jo2.getString("unionid"));				
+			}
+			
+			//1.使用微信用户信息直接登录，无需注册和绑定
+			HttpServletRequest req = AuthUtil.getServletRequest();
+			req.getSession().setAttribute("currentUser", user);
+			mv.setViewName("index");
 		}else {
 			logger.error("error:" +jo2.toString());
 		}
 		
-		return user;
+		return mv;
 	}
 }
