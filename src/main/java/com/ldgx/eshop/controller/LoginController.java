@@ -3,11 +3,17 @@ package com.ldgx.eshop.controller;
 import java.io.IOException;
 import java.net.URLEncoder;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.ldgx.eshop.util.HttpClientUtil;
+import com.ldgx.eshop.util.AuthUtil;
+import com.ldgx.eshop.util.WeixinUser;
+
+import net.sf.json.JSONObject;
 
 
 
@@ -23,6 +29,8 @@ public class LoginController {
 	
 	@Value("${weixin.backUrl}")
 	private String wx_backUrl;//回调地址
+	
+	private Logger logger =LoggerFactory.getLogger(this.getClass());
 	/**
 	 * 微信网络授权，1 第一步：用户同意授权，获取code
 	 * @return
@@ -83,7 +91,8 @@ public class LoginController {
 	 * @return
 	 */
 	@RequestMapping("/callback")
-	public String callback(String code) throws IOException{
+	@ResponseBody
+	public WeixinUser callback(String code) throws IOException{
 		StringBuffer sb = new StringBuffer("https://api.weixin.qq.com/sns/oauth2/access_token?appid=");
 		sb.append(wx_appid);
 		sb.append("&secret=");
@@ -91,17 +100,46 @@ public class LoginController {
 		sb.append("&code=");
 		sb.append(code);
 		sb.append("&grant_type=authorization_code");
-		StringBuffer rsb = HttpClientUtil.sendGet(sb.toString(), null);
+		JSONObject jo = AuthUtil.doGetJson(sb.toString());//HttpClientUtil.sendGet(sb.toString(), null);
 		
 		//4 第四步：拉取用户信息(需scope为 snsapi_userinfo)
 		StringBuffer sb4 = new StringBuffer("https://api.weixin.qq.com/sns/userinfo?access_token=");
 		sb4.append("ACCESS_TOKEN");
 		sb4.append("&openid=");
-		sb4.append("OPENID");
+		sb4.append(jo.get("openid"));
 		sb4.append("&lang=zh_CN");
 
-		StringBuffer rsb4 = HttpClientUtil.sendGet(sb4.toString(), null);
+		//StringBuffer rsb4 = HttpClientUtil.sendGet(sb4.toString(), null);
+		JSONObject jo2 = AuthUtil.doGetJson(sb.toString());
 		
-		return null;
+		WeixinUser user = new WeixinUser();
+		if(jo2 != null && jo2.containsKey("openid")) {
+			String openid = jo2.getString("openid");
+			if(openid != null) {
+				user.setOpenid(openid);
+				user.setNickname(jo2.getString("nickname"));
+				user.setSex(jo2.getInt("sex"));
+				user.setProvince(jo2.getString("province"));
+				user.setCity(jo2.getString("city"));
+				user.setCountry(jo2.getString("country"));
+				String headimgurl = jo2.getString("headimgurl");//用户头像，最后一个数值代表正方形头像大小（有0、46、64、96、132数值可选，0代表640*640正方形头像），用户没有头像时该项为空。若用户更换头像，原有头像URL将失效。
+				
+				if(headimgurl != null) {
+					String str = headimgurl.substring(headimgurl.lastIndexOf("/"));
+					if(str.matches("^\\d+$")) {
+						user.setHeadimgsize(Integer.parseInt(str));//正方形头像大小（有0、46、64、96、132数值可选，0代表640*640正方形头像）
+					}
+					
+					String headimgurl2 = headimgurl.substring(0, headimgurl.lastIndexOf("/"));
+					user.setHeadimgurl(headimgurl2);//用户头像图片
+				}
+				
+			}
+			user.setUnionid(jo2.getString("unionid"));
+		}else {
+			logger.error("error:" +jo2.toString());
+		}
+		
+		return user;
 	}
 }
