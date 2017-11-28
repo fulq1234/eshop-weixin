@@ -7,6 +7,7 @@ package com.ldgx.eshop.enums;
  */
 public enum MessageEnum {
 	text("text"),//文本类型
+	news("news"),//图文
 	image("image"),//图片消息
 	voice("voice"),//语音消息
 	video("video"),

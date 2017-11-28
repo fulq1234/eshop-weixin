@@ -9,5 +9,5 @@ public interface IWechatService {
 	 * @param scan
 	 * @return
 	 */
-	public Scan handlerMessage(Scan scan);
+	public Object handlerMessage(Scan scan);
 }

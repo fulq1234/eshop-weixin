@@ -65,14 +65,14 @@ public class WechatController {
 	 * @return
 	 */
 	@PostMapping(value = "/verifyWX")	
-	public @ResponseBody Scan weixinCreate(@RequestBody Scan scan) {
+	public @ResponseBody Object weixinCreate(@RequestBody Scan scan) {
 		if(scan == null) {
 			logger.error("接收到的字符串不能为空");
 			return null;
 		}
 		logger.info(scan.toString());
 		
-		Scan nScan = wechatService.handlerMessage(scan);			
+		Object nScan = wechatService.handlerMessage(scan);			
 		
 		return nScan;
 	}

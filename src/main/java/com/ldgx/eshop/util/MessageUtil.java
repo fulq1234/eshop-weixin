@@ -1,7 +1,18 @@
 package com.ldgx.eshop.util;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Value;
+
+import com.ldgx.eshop.enums.MessageEnum;
+import com.ldgx.eshop.model.News;
+import com.ldgx.eshop.model.NewsMessage;
+
 public class MessageUtil {
 	
+	@Value("${weixin.baseUrl}")
+	private static String baseUrl;
 	/**
 	 * 输入1，回复的信息
 	 * @return
@@ -33,5 +44,32 @@ public class MessageUtil {
 		sb.append("2.易众科技介绍");
 		sb.append("回复?退出此菜单");
 		return sb.toString();
+	}
+	
+	/**
+	 * 图文消息内容
+	 * @param toUserName
+	 * @param fromUserName
+	 * @return
+	 */
+	public static NewsMessage initNewsMessage(String toUserName,String fromUserName) {
+		List<News> newsList = new ArrayList<News>();
+		NewsMessage newsMessage = new NewsMessage();
+		News news = new News();
+		news.setTitle("劳动关系教育学校介绍");
+		news.setDescription("河北劳动关系职业学院[1]  有普通普通高等教育、成人高等教育、中专、工会干部培训、短期技能培训等多个教育层次，设置管理学、法学、工学、理学四个学科类别，30多个专业，在校生5000余人。在长期的教育实践中，积累了丰富的教学管理经验，创立了独树一帜的 “一专二能三结合”人才培养模式，即所学主体专业要“专”，掌握外语和计算机要“能”，专业、能力以及职业技能要“结合”。这一创新的教育模式改变了我国传统的追求书本知识及应试能力培养的模式。学生的综合素质和社会适应性不断提升。从中涌现出大量政府官员、成功企业家、优秀工程师和成千上万不同岗位的先进分子和技能高手。");
+		
+		news.setPicUrl(baseUrl + "/static/images/xhr.jpg");
+		news.setUrl("http://www.hbgy.edu.cn/");//跳转路径
+		
+		newsList.add(news);
+		
+		newsMessage.setToUserName(fromUserName);
+		newsMessage.setFromUserName(toUserName);
+		newsMessage.setCreateTime(new java.util.Date().getTime());
+		newsMessage.setMsgType(MessageEnum.news.getName());//消息类型
+		newsMessage.setArticles(newsList);
+		newsMessage.setArticleCount(newsList.size());
+		return newsMessage;
 	}
 }
