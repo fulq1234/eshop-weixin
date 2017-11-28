@@ -1,4 +1,4 @@
-package com.ldgx.eshop.util;
+package com.ldgx.eshop.model;
 
 /**
  * 每个用户针对每个公众号会产生一个安全的OpenID

@@ -7,13 +7,16 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.ldgx.eshop.dao.IWeixinDao;
+import com.ldgx.eshop.model.WeixinUser;
 import com.ldgx.eshop.util.AuthUtil;
-import com.ldgx.eshop.util.WeixinUser;
 
 import net.sf.json.JSONObject;
 
@@ -31,6 +34,9 @@ public class LoginController {
 	
 	@Value("${weixin.backUrl}")
 	private String wx_backUrl;//回调地址
+	
+	@Autowired
+	private IWeixinDao weixinDao;
 	
 	private Logger logger =LoggerFactory.getLogger(this.getClass());
 	/**
@@ -147,12 +153,43 @@ public class LoginController {
 			
 			//1.使用微信用户信息直接登录，无需注册和绑定
 			HttpServletRequest req = AuthUtil.getServletRequest();
-			req.getSession().setAttribute("currentUser", user);
-			mv.setViewName("index");
+			//req.getSession().setAttribute("currentUser", user);
+			
+			//mv.setViewName("index");
+			
+			//2.讲微信与当前系统的账号进行绑定。
+			if(jo2.containsKey("nickname")) {//绑定成功
+				String nickName = jo2.getString("nickname");
+				
+				String dbopenid = weixinDao.getNickNameByOpenid(openid);
+				if(dbopenid == null) {//重新登录
+
+					mv.addObject("openid", openid);
+					mv.setViewName("login");
+					return mv;
+				}
+				req.setAttribute("nickname", nickName);
+				mv.setViewName("index2");
+				return mv;
+			}else {//绑定失败
+				mv.addObject("openid", openid);
+				mv.setViewName("login");
+				return mv;
+			}
 		}else {
 			logger.error("error:" +jo2.toString());
 		}
 		
+		return mv;
+	}
+	
+	@RequestMapping(value="/wxCallBack")
+	public ModelAndView wxCallBack(@RequestParam(value="account")String account,
+			@RequestParam(value="openid")String openid) {
+		//根据account,password,,更新数据库中openid
+		ModelAndView mv = new ModelAndView();
+		weixinDao.updateOpenidByAccount(account, openid);
+		mv.setViewName("index");
 		return mv;
 	}
 }
