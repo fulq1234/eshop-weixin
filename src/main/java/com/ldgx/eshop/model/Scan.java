@@ -22,25 +22,9 @@ PUBLIC_MEMBER:每个公共获取方法/设置方法对和每个公共字段将�
  */
 @XmlRootElement(name="xml")//xml文件的根元素
 @XmlAccessorType(XmlAccessType.FIELD)//控制默认情况下是否对字段或Javabean属性进行系列化
-public class Scan {
+public class Scan extends BaseMessage{
 	
 	private Integer id;
-	
-	//开发者微信号
-	@XmlElement(name="ToUserName")
-	private String toUserName;
-	
-	//发送方帐号（一个OpenID）
-	@XmlElement(name="FromUserName")
-	private String fromUserName;
-	
-	//消息创建时间 （整型）
-	@XmlElement(name="CreateTime")
-	private Long createTime;
-	
-	//text
-	@XmlElement(name="MsgType")
-	private String msgType;
 	
 	//文本消息内容
 	@XmlElement(name="Content")
@@ -60,11 +44,11 @@ public class Scan {
 
 	public Scan(String toUserName, String fromUserName, String content) {
 		super();
-		this.toUserName = toUserName;
-		this.fromUserName = fromUserName;
+		super.setMsgType(MessageEnum.text.getName());
+		super.setCreateTime(new Date().getTime());
+		super.setToUserName(toUserName);
+		super.setFromUserName(fromUserName);
 		this.content = content;
-		this.msgType = MessageEnum.text.getName();
-		this.createTime = new Date().getTime();
 	}
 
 	public Integer getId() {
@@ -75,37 +59,7 @@ public class Scan {
 		this.id = id;
 	}
 
-	public String getToUserName() {
-		return toUserName;
-	}
-
-	public void setToUserName(String toUserName) {
-		this.toUserName = toUserName;
-	}
-
-	public String getFromUserName() {
-		return fromUserName;
-	}
-
-	public void setFromUserName(String fromUserName) {
-		this.fromUserName = fromUserName;
-	}
-
-	public Long getCreateTime() {
-		return createTime;
-	}
-
-	public void setCreateTime(Long createTime) {
-		this.createTime = createTime;
-	}
-
-	public String getMsgType() {
-		return msgType;
-	}
-
-	public void setMsgType(String msgType) {
-		this.msgType = msgType;
-	}
+	
 
 	public String getContent() {
 		return content;
@@ -131,12 +85,7 @@ public class Scan {
 		this.event = event;
 	}
 
-	@Override
-	public String toString() {
-		return "Scan [id=" + id + ", toUserName=" + toUserName + ", fromUserName=" + fromUserName + ", createTime="
-				+ createTime + ", msgType=" + msgType + ", content=" + content + ", MsgId=" + MsgId + ", event=" + event
-				+ "]";
-	}
+	
 
 	
 	

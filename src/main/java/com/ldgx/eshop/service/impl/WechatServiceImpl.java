@@ -4,8 +4,10 @@ package com.ldgx.eshop.service.impl;
 import org.springframework.stereotype.Service;
 
 import com.ldgx.eshop.enums.MessageEnum;
+import com.ldgx.eshop.model.ImageMessage;
 import com.ldgx.eshop.model.NewsMessage;
 import com.ldgx.eshop.model.Scan;
+import com.ldgx.eshop.model.VoiceMessage;
 import com.ldgx.eshop.service.IWechatService;
 import com.ldgx.eshop.util.MessageUtil;
 
@@ -29,9 +31,15 @@ public class WechatServiceImpl implements IWechatService {
 			}else if("2".equals(content)) {
 				Scan nscan = new Scan(fromUserName,toUserName,MessageUtil.secondMenu());
 				return nscan;
-			}else if("3".equals(content)) {
-				NewsMessage newsm = MessageUtil.initNewsMessage(scan.getToUserName(), scan.getFromUserName());
+			}else if("3".equals(content)) {//图文消息
+				NewsMessage newsm = MessageUtil.initNewsMessage(toUserName, fromUserName);
 				return newsm;
+			}else if("4".equals(content)) {//图片消息
+				ImageMessage imagem = MessageUtil.initImageMessage(toUserName, fromUserName);
+				return imagem;
+			}else if("5".equals(content)) {//语音消息
+				VoiceMessage vmessage = MessageUtil.initVoiceMessage(toUserName, fromUserName);
+				return vmessage;
 			}else if("?".equals(content)) {
 				Scan nscan = new Scan(fromUserName,toUserName,MessageUtil.subscribeMenu());
 				return nscan;

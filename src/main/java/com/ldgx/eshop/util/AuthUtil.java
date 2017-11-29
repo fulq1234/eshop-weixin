@@ -47,9 +47,16 @@ public class AuthUtil {
 		return jsonObject;
 	}
 	
+	/**
+	 * 获取request
+	 * @return
+	 */
 	public static HttpServletRequest getServletRequest() {
 		RequestAttributes ra = RequestContextHolder.getRequestAttributes();
         ServletRequestAttributes sra = (ServletRequestAttributes) ra;
+        if(sra == null) {
+        	return null;
+        }
        //request
         HttpServletRequest request = sra.getRequest();
         return request;

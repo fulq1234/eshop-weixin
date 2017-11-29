@@ -4,10 +4,31 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.ldgx.eshop.enums.MessageEnum;
+import com.ldgx.eshop.model.Image;
+import com.ldgx.eshop.model.ImageMessage;
 import com.ldgx.eshop.model.News;
 import com.ldgx.eshop.model.NewsMessage;
+import com.ldgx.eshop.model.Voice;
+import com.ldgx.eshop.model.VoiceMessage;
 
 public class MessageUtil {
+
+	
+	/**
+	 * 关注后回复的信息
+	 * @return
+	 */
+	public static String subscribeMenu() {
+		StringBuffer sb = new StringBuffer();
+		sb.append("欢迎您的关注，请按照菜单提示进行操作:\n\n");
+		sb.append("1.课程介绍\n");
+		sb.append("2.易众科技介绍\n");
+		sb.append("3.图文消息\n");
+		sb.append("4.图片消息\n");
+		sb.append("5.语音消息\n");
+		sb.append("回复?退出此菜单\n");
+		return sb.toString();
+	}
 	
 	/**
 	 * 输入1，回复的信息
@@ -21,6 +42,10 @@ public class MessageUtil {
 		
 	}
 	
+	/**
+	 * 2.文本消息
+	 * @return
+	 */
 	public static String secondMenu() {
 		StringBuffer sb = new StringBuffer();
 		sb.append("2.为保证座谈会反馈的问题和建议更具针对性、代表性，此次座谈的学生代表来自不同年级不同专业，教师代表来自各教学团队。座谈会上，师生代表踊跃发言，在总体肯定目前系部教学工作基础上，着重围绕教风学风、课堂教学等方面结合自身的体会纷献言献策，有针对性地提出许多中肯的意见和建议。老师们反映的焦点问题主要在于课堂纪律和学生出勤方面，学生们谈及较多的是老师的授课方法、课堂氛围以及教学效果，希望老师们多调动课堂气氛，丰富授课内容。计算机专业的学生还建议增加上机练习时间，多练技能。与会的老师对提出的问题和疑惑做了详细记录，并逐一给予解答。");
@@ -30,20 +55,7 @@ public class MessageUtil {
 	}
 	
 	/**
-	 * 关注后回复的信息
-	 * @return
-	 */
-	public static String subscribeMenu() {
-		StringBuffer sb = new StringBuffer();
-		sb.append("欢迎您的关注，请按照菜单提示进行操作:\n\n");
-		sb.append("1.课程介绍");
-		sb.append("2.易众科技介绍");
-		sb.append("回复?退出此菜单");
-		return sb.toString();
-	}
-	
-	/**
-	 * 图文消息内容
+	 * 3. 图文消息内容
 	 * @param toUserName
 	 * @param fromUserName
 	 * @return
@@ -101,4 +113,41 @@ public class MessageUtil {
 		newsMessage.setArticleCount(newsList.size());
 		return newsMessage;
 	}
+	
+	/**
+	 * 4. 构建图片消息
+	 * @param toUserName
+	 * @param fromUserName
+	 * @return
+	 */
+	public static ImageMessage initImageMessage(String toUserName,String fromUserName) {
+		Image image = new Image();
+		image.setMediaId("fHMTr2L0wLm-sDBIk6E7KVgmDdbNZnFBbZe2GVTOzNZ6hRrHohVfEn9SxUOcBIUn");//改值是使用com.ldgx.eshop.WxController方法的upimage
+		ImageMessage imageMessage = new ImageMessage();
+		imageMessage.setFromUserName(toUserName);
+		imageMessage.setToUserName(fromUserName);
+		imageMessage.setMsgType(MessageEnum.image.getName());
+		imageMessage.setCreateTime(new java.util.Date().getTime());
+		imageMessage.setImage(image);
+		return imageMessage;
+	}
+	
+	/**
+	 * 5.语音消息
+	 * @param toUserName
+	 * @param fromUserName
+	 * @return
+	 */
+	public static VoiceMessage initVoiceMessage(String toUserName,String fromUserName) {
+		Voice voice = new Voice();
+		voice.setMediaId("BOnJ7swFojrNYUT_4UFOpLh23JT1JtZ08DSl0ZVCbHn3VnanXBrFQkTzqS3CCNHG");//改值是使用com.ldgx.eshop.WxController方法的upimage.type=thumb
+		VoiceMessage voiceMessage = new VoiceMessage();
+		voiceMessage.setFromUserName(toUserName);
+		voiceMessage.setToUserName(fromUserName);
+		voiceMessage.setMsgType(MessageEnum.voice.getName());
+		voiceMessage.setCreateTime(new java.util.Date().getTime());
+		voiceMessage.setVoice(voice);
+		return voiceMessage;
+	}
+	
 }

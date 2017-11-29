@@ -8,21 +8,15 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 
+/**
+ * 图文消息
+ * @author Administrator
+ *
+ */
 @XmlRootElement(name="xml")
 @XmlAccessorType(XmlAccessType.FIELD)//控制默认情况下是否对字段或Javabean属性进行系列化
-public class NewsMessage{
+public class NewsMessage extends BaseMessage{
 
-	@XmlElement(name="ToUserName")
-	private String ToUserName;
-	
-	@XmlElement(name="FromUserName")
-	private String FromUserName;
-	
-	@XmlElement(name="CreateTime")
-	private Long CreateTime;
-	
-	@XmlElement(name="MsgType")
-	private String MsgType;
 	
 	@XmlElement(name="ArticleCount")
 	private  int ArticleCount;//数量
@@ -32,38 +26,7 @@ public class NewsMessage{
 	private List<News> Articles;//集合体	
 	
 	
-	public String getToUserName() {
-		return ToUserName;
-	}
-
-	public void setToUserName(String toUserName) {
-		ToUserName = toUserName;
-	}
-
-	public String getFromUserName() {
-		return FromUserName;
-	}
-
-	public void setFromUserName(String fromUserName) {
-		FromUserName = fromUserName;
-	}
-
-	public Long getCreateTime() {
-		return CreateTime;
-	}
-
-	public void setCreateTime(Long createTime) {
-		CreateTime = createTime;
-	}
-
-	public String getMsgType() {
-		return MsgType;
-	}
-
-	public void setMsgType(String msgType) {
-		MsgType = msgType;
-	}
-
+	
 	public int getArticleCount() {
 		return ArticleCount;
 	}
