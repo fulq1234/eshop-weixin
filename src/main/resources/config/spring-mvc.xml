@@ -14,6 +14,8 @@
         http://www.springframework.org/schema/aop
         http://www.springframework.org/schema/aop/spring-aop.xsd">
 
+<!-- 加载配置文件 -->
+	<context:property-placeholder location="classpath:config/config.properties"/>
 	<!-- 启动注解 -->
 	<mvc:annotation-driven/>
 	
@@ -46,5 +48,6 @@
         <property name="maxUploadSize" value="5447680"/>
         <property name="maxInMemorySize" value="10240" />
     </bean>
+	
 	
  </beans>

@@ -5,6 +5,7 @@ import java.security.NoSuchAlgorithmException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -29,6 +30,7 @@ public class WechatController {
 	
 	@Autowired
 	private IWechatService wechatService;
+	
 	
 	/**
 	 * 微信连接接口
@@ -66,14 +68,14 @@ public class WechatController {
 	 */
 	@PostMapping(value = "/verifyWX")	
 	public @ResponseBody Object weixinCreate(@RequestBody Scan scan) {
+	//public @ResponseBody Object weixinCreate(Scan scan) {	
 		if(scan == null) {
 			logger.error("接收到的字符串不能为空");
 			return null;
 		}
 		logger.info(scan.toString());
 		
-		Object nScan = wechatService.handlerMessage(scan);			
-		
+		Object nScan = wechatService.handlerMessage(scan);		
 		return nScan;
 	}
 	
