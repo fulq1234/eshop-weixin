@@ -59,7 +59,23 @@ public class WechatServiceImpl implements IWechatService {
 				
 				Scan nscan = new Scan(fromUserName,toUserName,MessageUtil.subscribeMenu());
 				return nscan;
+			}else if(MessageEnum.CLICK.getName().equals(eventType)) {//菜单点击事件
+
+				Scan nscan = new Scan(fromUserName,toUserName,MessageUtil.subscribeMenu());
+				return nscan;
+			}else if(MessageEnum.VIEW.getName().equals(eventType)) {//
+				String url = scan.getEventKey();
+				Scan nscan = new Scan(fromUserName,toUserName,url);
+				return nscan;
+			}else if(MessageEnum.scancode_push.getName().equals(eventType)) {//扫码关注
+				String key = scan.getEventKey();
+				Scan nscan = new Scan(fromUserName,toUserName,key);
+				return nscan;
 			}
+		}else if(MessageEnum.location.getName().equals(scan.getMsgType())) {//获取地理位置
+			String label = scan.getLabel();
+			Scan nscan = new Scan(fromUserName,toUserName,label);
+			return nscan;
 		}
 				
 		

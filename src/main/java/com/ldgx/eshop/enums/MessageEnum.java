@@ -11,6 +11,7 @@ public enum MessageEnum {
 	image("image"),//图片消息
 	voice("voice"),//语音消息
 	music("music"),//音乐
+	scancode_push("scancode_push"),//扫码推送
 	video("video"),
 	link("link"),
 	location("location"),

@@ -51,9 +51,11 @@ public class WeixinUtil {
 	//新增素材
 	private static String media_upload_url = "https://api.weixin.qq.com/cgi-bin/media/upload?access_token=ACCESSTOKEN&type=";;//新增临时素.图片：image；语音:voice
 	
-	//自定义菜单
+	//自定义菜单创建
 	private static String create_menu_url = "https://api.weixin.qq.com/cgi-bin/menu/create?access_token=ACCESS_TOKEN";
 	
+	//自定义菜单查询
+	private static String get_menu_url = "https://api.weixin.qq.com/cgi-bin/menu/get?access_token=ACCESS_TOKEN";
 	/**
 	 * 获取access token
 	 * @return
@@ -287,6 +289,20 @@ click和view的请求示例
 			result = jsonObject.getInt("errcode");
 		}
 		return result;
+	}
+	
+	/**
+	 * 自定义菜单查询
+	 * @param token
+	 * @return
+	 * @throws ClientProtocolException
+	 * @throws IOException
+	 */
+	public static JSONObject queryMenu(String token) throws ClientProtocolException, IOException {
+		String url = get_menu_url.replace("ACCESS_TOKEN", token);
+		System.out.println(url);
+		JSONObject jsonObject = AuthUtil.doGetJson(url);
+		return jsonObject;
 	}
 	
 }

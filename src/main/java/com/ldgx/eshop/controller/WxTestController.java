@@ -10,6 +10,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.ldgx.eshop.button.Menu;
 import com.ldgx.eshop.util.WeixinUtil;
 
+import net.sf.json.JSONObject;
+
+/**
+ * 可以执行执行controller,执行方法
+ * @author Administrator
+ *
+ */
 @Controller
 @RequestMapping("/wxmain")
 public class WxTestController {
@@ -58,6 +65,28 @@ public class WxTestController {
 			}else {
 				logger.error("错误码:" +result);
 			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return "";
+		
+		
+	}
+	
+	/**
+	 * 菜单查询
+	 * @return
+	 */
+	@RequestMapping("/querymenu")
+	@ResponseBody
+	public String querymenu() {
+		try {
+			String access_token = WeixinUtil.getAccessToken();
+			JSONObject jsonObject = WeixinUtil.queryMenu(access_token);
+			System.out.println(jsonObject);
+			logger.info(jsonObject);
+			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

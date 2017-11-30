@@ -37,6 +37,11 @@ public class Scan extends BaseMessage{
 	@XmlElement(name="Event")
 	private String event;
 
+	@XmlElement(name="EventKey")
+	private String EventKey;
+	
+	@XmlElement(name="Label")
+	private String Label;
 	
 	public Scan() {
 		super();
@@ -83,6 +88,22 @@ public class Scan extends BaseMessage{
 
 	public void setEvent(String event) {
 		this.event = event;
+	}
+
+	public String getEventKey() {
+		return EventKey;
+	}
+
+	public void setEventKey(String eventKey) {
+		EventKey = eventKey;
+	}
+
+	public String getLabel() {
+		return Label;
+	}
+
+	public void setLabel(String label) {
+		Label = label;
 	}
 
 	
