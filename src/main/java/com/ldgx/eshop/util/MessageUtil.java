@@ -3,8 +3,6 @@ package com.ldgx.eshop.util;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Value;
-
 import com.ldgx.eshop.enums.MessageEnum;
 import com.ldgx.eshop.model.Image;
 import com.ldgx.eshop.model.ImageMessage;

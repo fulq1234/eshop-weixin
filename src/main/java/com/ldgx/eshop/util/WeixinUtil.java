@@ -13,9 +13,16 @@ import java.net.URL;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.http.HttpResponse;
+import org.apache.http.ParseException;
 import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.util.EntityUtils;
 import org.springframework.beans.factory.annotation.Value;
 
+import com.ldgx.eshop.button.Button;
 import com.ldgx.eshop.button.ClickButton;
 import com.ldgx.eshop.button.Menu;
 import com.ldgx.eshop.button.ViewButton;
@@ -43,6 +50,9 @@ public class WeixinUtil {
 	
 	//新增素材
 	private static String media_upload_url = "https://api.weixin.qq.com/cgi-bin/media/upload?access_token=ACCESSTOKEN&type=";;//新增临时素.图片：image；语音:voice
+	
+	//自定义菜单
+	private static String create_menu_url = "https://api.weixin.qq.com/cgi-bin/menu/create?access_token=ACCESS_TOKEN";
 	
 	/**
 	 * 获取access token
@@ -167,6 +177,10 @@ public class WeixinUtil {
 	}
 	
 	
+	/**
+	 * 组装菜单
+	 * @return
+	 */
 	public static Menu initMenu() {
 		Menu menu = new Menu();
 		
@@ -190,12 +204,89 @@ public class WeixinUtil {
 		button32.setType("location_select");
 		button32.setKey("32");
 		
-		//Button button = new Button();
+		Button button = new Button();
+		button.setName("菜单");
+		button.setSub_button(new Button[] {button31,button32});
 		
+		menu.setButton(new Button[] {button11,button21,button});
 		
 		
 		return menu;
 	}
 	
+	/**
+	 * POST请求
+	 * @param url
+	 * @param outStr:实体转化成的字符串,比如JSONObject.fromObject(menu).toString()
+	 * @return
+	 * @throws ParseException
+	 * @throws IOException
+	 */
+	public static JSONObject doPostStr(String url,String outStr) throws ParseException, IOException{
+		DefaultHttpClient client = new DefaultHttpClient();
+		HttpPost httpost = new HttpPost(url);
+		JSONObject jsonObject = null;
+		httpost.setEntity(new StringEntity(outStr,"UTF-8"));
+		HttpResponse response = client.execute(httpost);
+		String result = EntityUtils.toString(response.getEntity(),"UTF-8");
+		jsonObject = JSONObject.fromObject(result);
+		return jsonObject;
+	}
+	
+	/**
+	 * 自定义菜单
+	 * @param token
+	 * @param menu
+	 * @return
+	 * @throws ClientProtocolException
+	 * @throws IOException
+
+接口调用请求说明
+
+http请求方式：POST（请使用https协议） https://api.weixin.qq.com/cgi-bin/menu/create?access_token=ACCESS_TOKEN
+
+click和view的请求示例
+
+ {
+     "button":[
+     {	
+          "type":"click",
+          "name":"今日歌曲",
+          "key":"V1001_TODAY_MUSIC"
+      },
+      {
+           "name":"菜单",
+           "sub_button":[
+           {	
+               "type":"view",
+               "name":"搜索",
+               "url":"http://www.soso.com/"
+            },
+            {
+                 "type":"miniprogram",
+                 "name":"wxa",
+                 "url":"http://mp.weixin.qq.com",
+                 "appid":"wx286b93c14bbf93aa",
+                 "pagepath":"pages/lunar/index"
+             },
+            {
+               "type":"click",
+               "name":"赞一下我们",
+               "key":"V1001_GOOD"
+            }]
+       }]
+ }
+	 */
+	public static int createMenu(String token,Menu menu) throws ClientProtocolException, IOException {
+		int result = 0;
+		String url = create_menu_url.replace("ACCESS_TOKEN", token);
+		
+		String menu_str = JSONObject.fromObject(menu).toString();
+		JSONObject jsonObject = doPostStr(url,menu_str);//发送请求
+		if(jsonObject != null) {
+			result = jsonObject.getInt("errcode");
+		}
+		return result;
+	}
 	
 }
