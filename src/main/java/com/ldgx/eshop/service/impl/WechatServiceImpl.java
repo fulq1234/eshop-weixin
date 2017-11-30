@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 
 import com.ldgx.eshop.enums.MessageEnum;
 import com.ldgx.eshop.model.ImageMessage;
+import com.ldgx.eshop.model.MusicMessage;
 import com.ldgx.eshop.model.NewsMessage;
 import com.ldgx.eshop.model.Scan;
 import com.ldgx.eshop.model.VoiceMessage;
@@ -39,6 +40,9 @@ public class WechatServiceImpl implements IWechatService {
 				return imagem;
 			}else if("5".equals(content)) {//语音消息
 				VoiceMessage vmessage = MessageUtil.initVoiceMessage(toUserName, fromUserName);
+				return vmessage;
+			}else if("6".equals(content)) {//音乐消息
+				MusicMessage vmessage = MessageUtil.initMusicMessage(toUserName, fromUserName);
 				return vmessage;
 			}else if("?".equals(content)) {
 				Scan nscan = new Scan(fromUserName,toUserName,MessageUtil.subscribeMenu());

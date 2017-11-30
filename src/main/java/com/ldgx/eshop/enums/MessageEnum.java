@@ -10,6 +10,7 @@ public enum MessageEnum {
 	news("news"),//图文
 	image("image"),//图片消息
 	voice("voice"),//语音消息
+	music("music"),//音乐
 	video("video"),
 	link("link"),
 	location("location"),

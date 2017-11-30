@@ -6,6 +6,8 @@ import java.util.List;
 import com.ldgx.eshop.enums.MessageEnum;
 import com.ldgx.eshop.model.Image;
 import com.ldgx.eshop.model.ImageMessage;
+import com.ldgx.eshop.model.Music;
+import com.ldgx.eshop.model.MusicMessage;
 import com.ldgx.eshop.model.News;
 import com.ldgx.eshop.model.NewsMessage;
 import com.ldgx.eshop.model.Voice;
@@ -26,6 +28,7 @@ public class MessageUtil {
 		sb.append("3.图文消息\n");
 		sb.append("4.图片消息\n");
 		sb.append("5.语音消息\n");
+		sb.append("6.音乐消息\n");
 		sb.append("回复?退出此菜单\n");
 		return sb.toString();
 	}
@@ -150,4 +153,25 @@ public class MessageUtil {
 		return voiceMessage;
 	}
 	
+	/**
+	 * 6.音乐消息
+	 * @param toUserName
+	 * @param fromUserName
+	 * @return
+	 */
+	public static MusicMessage initMusicMessage(String toUserName,String fromUserName) {
+		MusicMessage mMessage = new MusicMessage();
+		Music music = new Music();
+		music.setThumbMediaId("BOnJ7swFojrNYUT_4UFOpLh23JT1JtZ08DSl0ZVCbHn3VnanXBrFQkTzqS3CCNHG");//改值是使用com.ldgx.eshop.WxController方法的upimage.type=thumb
+		music.setTitle("老鼠爱大米");
+		music.setDescription("老鼠的音乐");
+		music.setMusicUrl("http://zapper.tunnel.mobi/Weixin/resource/See You Again.mp3");
+		music.sethQMusicUrl("http://zapper.tunnel.mobi/Weixin/resource/See You Again.mp3");
+		mMessage.setFromUserName(toUserName);
+		mMessage.setToUserName(fromUserName);
+		mMessage.setMsgType(MessageEnum.music.getName());
+		mMessage.setCreateTime(new java.util.Date().getTime());
+		mMessage.setMusic(music);
+		return mMessage;
+	}
 }

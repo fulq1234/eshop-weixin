@@ -9,12 +9,16 @@ import javax.xml.bind.annotation.XmlElement;
  */
 public class BaseMessage {
 
+	//接收方帐号（收到的OpenID）
 	@XmlElement(name="ToUserName")
 	private String ToUserName;
 	
+	
+	//开发者微信号
 	@XmlElement(name="FromUserName")
 	private String FromUserName;
 	
+	//消息创建时间 （整型）
 	@XmlElement(name="CreateTime")
 	private Long CreateTime;
 	
