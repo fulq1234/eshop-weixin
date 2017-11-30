@@ -1,6 +1,7 @@
 package com.ldgx.eshop.service.impl;
 
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.ldgx.eshop.enums.MessageEnum;
@@ -15,6 +16,8 @@ import com.ldgx.eshop.util.MessageUtil;
 @Service
 public class WechatServiceImpl implements IWechatService {
 
+	@Value("${weixin.url}")
+	private String product_ur;
 	/**
 	 * 处理信息
 	 */
@@ -42,7 +45,7 @@ public class WechatServiceImpl implements IWechatService {
 				VoiceMessage vmessage = MessageUtil.initVoiceMessage(toUserName, fromUserName);
 				return vmessage;
 			}else if("6".equals(content)) {//音乐消息
-				MusicMessage vmessage = MessageUtil.initMusicMessage(toUserName, fromUserName);
+				MusicMessage vmessage = MessageUtil.initMusicMessage(toUserName, fromUserName,product_ur + "/static/images/xiaobaitu.mp3");
 				return vmessage;
 			}else if("?".equals(content)) {
 				Scan nscan = new Scan(fromUserName,toUserName,MessageUtil.subscribeMenu());

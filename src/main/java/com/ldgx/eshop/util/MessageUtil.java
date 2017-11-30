@@ -3,6 +3,8 @@ package com.ldgx.eshop.util;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Value;
+
 import com.ldgx.eshop.enums.MessageEnum;
 import com.ldgx.eshop.model.Image;
 import com.ldgx.eshop.model.ImageMessage;
@@ -14,7 +16,7 @@ import com.ldgx.eshop.model.Voice;
 import com.ldgx.eshop.model.VoiceMessage;
 
 public class MessageUtil {
-
+	
 	
 	/**
 	 * 关注后回复的信息
@@ -159,14 +161,14 @@ public class MessageUtil {
 	 * @param fromUserName
 	 * @return
 	 */
-	public static MusicMessage initMusicMessage(String toUserName,String fromUserName) {
+	public static MusicMessage initMusicMessage(String toUserName,String fromUserName,String musicUrl) {
 		MusicMessage mMessage = new MusicMessage();
 		Music music = new Music();
 		music.setThumbMediaId("BOnJ7swFojrNYUT_4UFOpLh23JT1JtZ08DSl0ZVCbHn3VnanXBrFQkTzqS3CCNHG");//改值是使用com.ldgx.eshop.WxController方法的upimage.type=thumb
-		music.setTitle("老鼠爱大米");
-		music.setDescription("老鼠的音乐");
-		music.setMusicUrl("http://zapper.tunnel.mobi/Weixin/resource/See You Again.mp3");
-		music.sethQMusicUrl("http://zapper.tunnel.mobi/Weixin/resource/See You Again.mp3");
+		music.setTitle("小白兔");
+		music.setDescription("小白兔乖乖");
+		music.setMusicUrl(musicUrl);
+		music.sethQMusicUrl(musicUrl);
 		mMessage.setFromUserName(toUserName);
 		mMessage.setToUserName(fromUserName);
 		mMessage.setMsgType(MessageEnum.music.getName());

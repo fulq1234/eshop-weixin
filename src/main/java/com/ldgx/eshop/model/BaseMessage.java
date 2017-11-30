@@ -1,12 +1,17 @@
 package com.ldgx.eshop.model;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  * 消息的基本类
  * @author Administrator
  *
  */
+@XmlRootElement(name="BaseMessage")
+@XmlAccessorType(XmlAccessType.FIELD)
 public class BaseMessage {
 
 	//接收方帐号（收到的OpenID）
